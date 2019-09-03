@@ -48,7 +48,7 @@ void DealtHand(vector<int>& i, vector<int>& h, vector<int>& d, int& length, int&
             dT += *itr;
 
         }
-     cout << endl;
+    cout << endl;
 }
 void HandWinner(int p, int d)
 {
@@ -56,6 +56,47 @@ void HandWinner(int p, int d)
     cout << winner + " wins!\n";
     cout << p << endl;
     cout << d << endl;
+}
+//Work on this function, on right track, from here similar to deal
+void HitOrPass(vector<int>& p, int& length, vector<int>& allCards, int& pT)
+{
+    int hitCard=0;
+    char hitOrNah;
+    bool ContinueHit = true;
+    while(ContinueHit==true)
+    {
+        cout << "Would you like to hit? (y or n)\n";
+        cin >> hitOrNah;
+        if(hitOrNah=='y')
+        {
+            hitCard = (1 + (rand() % length));
+            p.push_back(allCards[hitCard]);
+            allCards.erase(allCards.begin() + hitCard);
+            length--;
+            //It's doubling my total from deal here, figure it out
+            for (vector<int>::iterator itr = p.begin(); itr != p.end(); itr++)
+            {
+                cout << *itr << endl;
+                pT += *itr;
+            }
+                cout << pT << endl;
+                ContinueHit = true;
+                continue;
+        }
+        else if(hitOrNah=='n')
+        {
+            cout << "You've chosen not to hit, your hand is now final\n";
+            ContinueHit=false;
+            break;
+        }
+        else
+        {
+            cout << "Not a valid input, try again (y or n)\n";
+            ContinueHit=true;
+            continue;
+        }
+        
+    }
 }
 int main()
 {
@@ -92,6 +133,7 @@ int main()
         // {
         //     cout << *itr << endl;
         // }
+        HitOrPass(yourHand,arrayLen, cardDeck, playHandTotal);
         HandWinner(playHandTotal,dealHandTotal);
 
         playing=false;
