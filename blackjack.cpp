@@ -193,8 +193,11 @@ void DealHit(vector<int> &p, int &length, vector<int> &allCards, int &pT)
                 DealHit(dealerHand, arrayLen, cardDeck, dealHandTotal);
                 }
                 HandWinner(playHandTotal, dealHandTotal);
-
-                playing = false;
+                //Play again giving float point error
+                cout << "Would you like to play another hand (y or n)?\n";
+                char yesNo = 'y';
+                cin >> yesNo;
+                playing=(yesNo=='y')?true:false;
             }
 
             return 0;
