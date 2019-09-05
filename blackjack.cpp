@@ -7,7 +7,6 @@
 #include <ctime>
 
 using namespace std;
-//Next, work on a hit/pass function, this should be damn easy after the ordeal with the heap
 
 void DealtHand(vector<int>& i, vector<int>& h, vector<int>& d, int& length, int& pT, int& dT)
 {
@@ -24,7 +23,6 @@ void DealtHand(vector<int>& i, vector<int>& h, vector<int>& d, int& length, int&
         h.push_back(i[secondCard]);
         i.erase(i.begin() + secondCard);
         length--;
-
         dealFCard = (1 + (rand() % length));
         d.push_back(i[dealFCard]);
         i.erase(i.begin() + dealFCard);
@@ -39,24 +37,22 @@ void DealtHand(vector<int>& i, vector<int>& h, vector<int>& d, int& length, int&
         {
             cout << *itr << endl;
             pT+=*itr;
-            // cout << yourHandSum << endl;
         }
-        cout << "Dealer's opening hand is: \n";
+        cout << "Your total is: " << pT << endl;
         for (vector<int>::iterator itr = d.begin(); itr != d.end(); itr++)
         {
-            cout << *itr << endl;
+            //cout << *itr << endl;
             dT += *itr;
-
         }
-    cout << endl;
+        cout << "Dealer's shown card is: \n" << d[1] << endl;
 }
 void HandWinner(int p, int d)
 {
     string winner=((p>d) && (p<=21))?"Player":"Dealer";
     if(d>21){winner="Player";}
     cout << winner + " wins!\n";
-    cout << p << endl;
-    cout << d << endl;
+    cout << "Player total: " << p << endl;
+    cout << "Dealer total: " << d << endl;
 }
 //Work on this function, on right track, from here similar to deal
 void HitOrPass(vector<int>& p, int& length, vector<int>& allCards, int& pT)
@@ -66,7 +62,6 @@ void HitOrPass(vector<int>& p, int& length, vector<int>& allCards, int& pT)
     bool ContinueHit = true;
     while(ContinueHit==true)
     {
-        //int* handPt=&pT;
         if(pT<=21)
         {
         cout << "Would you like to hit? (y or n)\n";
@@ -78,13 +73,13 @@ void HitOrPass(vector<int>& p, int& length, vector<int>& allCards, int& pT)
             allCards.erase(allCards.begin() + hitCard);
             length--;
             pT=0;
+            cout << "Your hand is:\n";
             for (vector<int>::iterator itr = p.begin(); itr != p.end(); itr++)
             {
                 cout << *itr << endl;
                 pT += *itr;
             }
-            cout << pT << endl;
-            ContinueHit = true;
+            cout << "Your hand total is " << pT << endl;
             continue;
         }
         else if(hitOrNah=='n')
@@ -95,8 +90,7 @@ void HitOrPass(vector<int>& p, int& length, vector<int>& allCards, int& pT)
         }
         else
         {
-            cout << "Not a valid input, try again (y or n)\n";
-            ContinueHit=true;
+            cout << "Not a valid input, try again\n";
             continue;
         }
         }
@@ -104,10 +98,8 @@ void HitOrPass(vector<int>& p, int& length, vector<int>& allCards, int& pT)
         {
             cout << "You've busted\n";
             break;
-        }
-        
+        }   
     }
-
 }
 void DealHit(vector<int> &p, int &length, vector<int> &allCards, int &pT)
 {
@@ -128,7 +120,8 @@ void DealHit(vector<int> &p, int &length, vector<int> &allCards, int &pT)
             allCards.erase(allCards.begin() + hitCard);
             length--;
             pT = 0;
-            for (vector<int>::iterator itr = p.begin(); itr != p.end(); itr++)
+            cout << "Dealer's shown cards are: \n";
+            for (vector<int>::iterator itr = p.begin()+1; itr != p.end(); itr++)
             {
                 cout << *itr << endl;
                 pT += *itr;
@@ -155,20 +148,18 @@ void DealHit(vector<int> &p, int &length, vector<int> &allCards, int &pT)
         {
             //srand(time(NULL)) is used here to create a random seed so that the cards are actually randomized each run
             srand(time(NULL));
-            // int jack, queen, king = 10;
-            // int ace = 11;
-            int allCards[] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 11};
-            int arrayLen = (sizeof(allCards) / sizeof(*allCards));
-            int i = 0;
-            int playHandTotal = 0;
-            int dealHandTotal = 0;
-            vector<int> cardDeck;
-            vector<int> yourHand;
-            vector<int> dealerHand;
             cout << "Welcome to the Blackjack table, special rule is Aces are static at 11 \nand Face Cards are all named as 10, let's deal you in\n";
             bool playing = true;
             while (playing == true)
             {
+                int allCards[] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 11};
+                int arrayLen = (sizeof(allCards) / sizeof(*allCards));
+                int i = 0;
+                int playHandTotal = 0;
+                int dealHandTotal = 0;
+                vector<int> cardDeck;
+                vector<int> yourHand;
+                vector<int> dealerHand;
                 for (int j = 0; j < 4; j++)
                 {
                     for (i = 0; i < arrayLen; i++)
@@ -180,25 +171,21 @@ void DealHit(vector<int> &p, int &length, vector<int> &allCards, int &pT)
                 cout << "*Dealing Now*\n";
 
                 DealtHand(cardDeck, yourHand, dealerHand, arrayLen, playHandTotal, dealHandTotal);
-
                 //****Ha, fuck you pointers, I did it****
                 // for (vector<int>::iterator itr = cardDeck.begin(); itr != cardDeck.end(); itr++)
                 // {
                 //     cout << *itr << endl;
                 // }
                 HitOrPass(yourHand, arrayLen, cardDeck, playHandTotal);
-                //need to make function still, just placing parameters so i remember
                 if(playHandTotal <=21)
                 {
                 DealHit(dealerHand, arrayLen, cardDeck, dealHandTotal);
                 }
                 HandWinner(playHandTotal, dealHandTotal);
-                //Play again giving float point error
                 cout << "Would you like to play another hand (y or n)?\n";
                 char yesNo = 'y';
                 cin >> yesNo;
                 playing=(yesNo=='y')?true:false;
             }
-
             return 0;
         }
