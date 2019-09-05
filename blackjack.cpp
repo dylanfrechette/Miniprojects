@@ -53,6 +53,7 @@ void DealtHand(vector<int>& i, vector<int>& h, vector<int>& d, int& length, int&
 void HandWinner(int p, int d)
 {
     string winner=((p>d) && (p<=21))?"Player":"Dealer";
+    if(d>21){winner="Player";}
     cout << winner + " wins!\n";
     cout << p << endl;
     cout << d << endl;
@@ -66,6 +67,8 @@ void HitOrPass(vector<int>& p, int& length, vector<int>& allCards, int& pT)
     while(ContinueHit==true)
     {
         //int* handPt=&pT;
+        if(pT<=21)
+        {
         cout << "Would you like to hit? (y or n)\n";
         cin >> hitOrNah;
         if(hitOrNah=='y')
@@ -96,51 +99,103 @@ void HitOrPass(vector<int>& p, int& length, vector<int>& allCards, int& pT)
             ContinueHit=true;
             continue;
         }
-        
-    }
-}
-int main()
-{
-    //srand(time(NULL)) is used here to create a random seed so that the cards are actually randomized each run
-    srand(time(NULL));
-    // int jack, queen, king = 10;
-    // int ace = 11;
-    int allCards[] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 11};
-    int arrayLen=(sizeof(allCards)/sizeof(*allCards));
-    int i=0;
-    int playHandTotal=0;
-    int dealHandTotal=0;
-    vector<int> cardDeck;
-    vector<int> yourHand;
-    vector<int> dealerHand;
-    cout << "Welcome to the Blackjack table, special rule is Aces are static at 11 \nand Face Cards are all named as 10, let's deal you in\n";
-    bool playing = true;
-    while (playing==true)
-    {
-        for(int j=0;j<4;j++)
-        {
-            for (i=0; i < arrayLen; i++)
-            {
-                cardDeck.push_back(allCards[i]);
-            }
-        i=0;
         }
-        cout << "*Dealing Now*\n";
+        else
+        {
+            cout << "You've busted\n";
+            break;
+        }
         
-        DealtHand(cardDeck, yourHand, dealerHand, arrayLen, playHandTotal, dealHandTotal);
-        
-        //****Ha, fuck you pointers, I did it****
-        // for (vector<int>::iterator itr = cardDeck.begin(); itr != cardDeck.end(); itr++)
-        // {
-        //     cout << *itr << endl;
-        // }
-        HitOrPass(yourHand,arrayLen, cardDeck, playHandTotal);
-        //need to make function still, just placing parameters so i remember
-        DealHit(dealerHand, arrayLen, cardDeck, dealHandTotal);
-        HandWinner(playHandTotal,dealHandTotal);
-
-        playing=false;
     }
 
-    return 0;
 }
+void DealHit(vector<int> &p, int &length, vector<int> &allCards, int &pT)
+{
+    int hitCard = 0;
+    char hitOrNah;
+    bool ContinueHit = true;
+    while (ContinueHit == true)
+    {
+        //int* handPt=&pT;
+        if(pT<=21)
+        {
+        hitOrNah=(pT<=15)?'y':'n';
+        if (hitOrNah == 'y')
+        {
+            cout << "Dealer has chosen to hit\n";
+            hitCard = (1 + (rand() % length));
+            p.push_back(allCards[hitCard]);
+            allCards.erase(allCards.begin() + hitCard);
+            length--;
+            pT = 0;
+            for (vector<int>::iterator itr = p.begin(); itr != p.end(); itr++)
+            {
+                cout << *itr << endl;
+                pT += *itr;
+            }
+            cout << pT << endl;
+            ContinueHit = true;
+            continue;
+        }
+        else if (hitOrNah == 'n')
+        {
+            cout << "Dealer has chosen not to hit, his hand is final\n";
+            ContinueHit = false;
+            break;
+        }
+        }
+        else
+        {
+            cout << "Dealer busted\n";
+            break;
+        }
+    }
+}
+        int main()
+        {
+            //srand(time(NULL)) is used here to create a random seed so that the cards are actually randomized each run
+            srand(time(NULL));
+            // int jack, queen, king = 10;
+            // int ace = 11;
+            int allCards[] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 11};
+            int arrayLen = (sizeof(allCards) / sizeof(*allCards));
+            int i = 0;
+            int playHandTotal = 0;
+            int dealHandTotal = 0;
+            vector<int> cardDeck;
+            vector<int> yourHand;
+            vector<int> dealerHand;
+            cout << "Welcome to the Blackjack table, special rule is Aces are static at 11 \nand Face Cards are all named as 10, let's deal you in\n";
+            bool playing = true;
+            while (playing == true)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    for (i = 0; i < arrayLen; i++)
+                    {
+                        cardDeck.push_back(allCards[i]);
+                    }
+                    i = 0;
+                }
+                cout << "*Dealing Now*\n";
+
+                DealtHand(cardDeck, yourHand, dealerHand, arrayLen, playHandTotal, dealHandTotal);
+
+                //****Ha, fuck you pointers, I did it****
+                // for (vector<int>::iterator itr = cardDeck.begin(); itr != cardDeck.end(); itr++)
+                // {
+                //     cout << *itr << endl;
+                // }
+                HitOrPass(yourHand, arrayLen, cardDeck, playHandTotal);
+                //need to make function still, just placing parameters so i remember
+                if(playHandTotal <=21)
+                {
+                DealHit(dealerHand, arrayLen, cardDeck, dealHandTotal);
+                }
+                HandWinner(playHandTotal, dealHandTotal);
+
+                playing = false;
+            }
+
+            return 0;
+        }
