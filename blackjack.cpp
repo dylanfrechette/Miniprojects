@@ -52,7 +52,7 @@ void DealtHand(vector<int>& i, vector<int>& h, vector<int>& d, int& length, int&
 }
 void HandWinner(int p, int d)
 {
-    string winner=((p>d))?"Player":"Dealer";
+    string winner=((p>d) && (p<=21))?"Player":"Dealer";
     cout << winner + " wins!\n";
     cout << p << endl;
     cout << d << endl;
@@ -65,6 +65,7 @@ void HitOrPass(vector<int>& p, int& length, vector<int>& allCards, int& pT)
     bool ContinueHit = true;
     while(ContinueHit==true)
     {
+        //int* handPt=&pT;
         cout << "Would you like to hit? (y or n)\n";
         cin >> hitOrNah;
         if(hitOrNah=='y')
@@ -73,15 +74,15 @@ void HitOrPass(vector<int>& p, int& length, vector<int>& allCards, int& pT)
             p.push_back(allCards[hitCard]);
             allCards.erase(allCards.begin() + hitCard);
             length--;
-            //It's doubling my total from deal here, figure it out
+            pT=0;
             for (vector<int>::iterator itr = p.begin(); itr != p.end(); itr++)
             {
                 cout << *itr << endl;
                 pT += *itr;
             }
-                cout << pT << endl;
-                ContinueHit = true;
-                continue;
+            cout << pT << endl;
+            ContinueHit = true;
+            continue;
         }
         else if(hitOrNah=='n')
         {
@@ -134,14 +135,12 @@ int main()
         //     cout << *itr << endl;
         // }
         HitOrPass(yourHand,arrayLen, cardDeck, playHandTotal);
+        //need to make function still, just placing parameters so i remember
+        DealHit(dealerHand, arrayLen, cardDeck, dealHandTotal);
         HandWinner(playHandTotal,dealHandTotal);
 
         playing=false;
     }
-
-
-
-
 
     return 0;
 }
