@@ -1,3 +1,9 @@
+/*********
+would like to optimize a bit if possible, 
+try to change some 10's to J,Q,K, 11's to A,
+cut down on lines, find way to reduce repetition
+*********/
+
 #include <iomanip>
 #include <stdlib.h>
 #include <string.h>
@@ -54,7 +60,6 @@ void HandWinner(int p, int d)
     cout << "Player total: " << p << endl;
     cout << "Dealer total: " << d << endl;
 }
-//Work on this function, on right track, from here similar to deal
 void HitOrPass(vector<int>& p, int& length, vector<int>& allCards, int& pT)
 {
     int hitCard=0;
@@ -108,7 +113,6 @@ void DealHit(vector<int> &p, int &length, vector<int> &allCards, int &pT)
     bool ContinueHit = true;
     while (ContinueHit == true)
     {
-        //int* handPt=&pT;
         if(pT<=21)
         {
         hitOrNah=(pT<=15)?'y':'n';
