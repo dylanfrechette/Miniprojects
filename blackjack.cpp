@@ -154,9 +154,11 @@ void DealHit(vector<int> &p, int &length, vector<int> &allCards, int &pT)
             srand(time(NULL));
             cout << "Welcome to the Blackjack table, special rule is Aces are static at 11 \nand Face Cards are all named as 10, let's deal you in\n";
             bool playing = true;
+            //while loop for inserting cards into deck
             while (playing == true)
             {
-                int allCards[] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 11};
+                //array storing values for cards, face cards are 10, ace is exclusively 11
+                int allCards[] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11};
                 int arrayLen = (sizeof(allCards) / sizeof(*allCards));
                 int i = 0;
                 int playHandTotal = 0;
@@ -164,6 +166,7 @@ void DealHit(vector<int> &p, int &length, vector<int> &allCards, int &pT)
                 vector<int> cardDeck;
                 vector<int> yourHand;
                 vector<int> dealerHand;
+                //pushes the allCards array 4 times into deck
                 for (int j = 0; j < 4; j++)
                 {
                     for (i = 0; i < arrayLen; i++)
@@ -173,9 +176,9 @@ void DealHit(vector<int> &p, int &length, vector<int> &allCards, int &pT)
                     i = 0;
                 }
                 cout << "*Dealing Now*\n";
-
+                
+                //call function to "deal" hands to yourself and dealer
                 DealtHand(cardDeck, yourHand, dealerHand, arrayLen, playHandTotal, dealHandTotal);
-                //****Ha, fuck you pointers, I did it****
                 // for (vector<int>::iterator itr = cardDeck.begin(); itr != cardDeck.end(); itr++)
                 // {
                 //     cout << *itr << endl;
